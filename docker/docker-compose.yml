@@ -1,0 +1,39 @@
+springboot:
+  image: soc/base
+  ports:
+    - "8090:8090"
+    - "8091:8091"
+  links:
+    - mysql
+    - elasticsearch
+  volumes_from:
+    - data
+  command: mvn -f /spring-boot/pom.xml clean spring-boot:run
+
+mysql:
+  image: tutum/mysql
+  environment:
+    MYSQL_USER: "lucien"
+    MYSQL_PASS: "123456"
+    ON_CREATE_DB: "project"
+    STARTUP_SQL: "/db.sql"
+  ports:
+    - "3307:3306"
+  volumes_from:
+    - data
+
+elasticsearch:
+  image: soc/elasticsearch
+  ports:
+    - "9200:9200"
+    - "9300:9300"
+
+data:
+  image: busybox
+  volumes:
+    - ./../src:/spring-boot/src
+    - ./../pom.xml:/spring-boot/pom.xml
+    - ./application.yml:/spring-boot/src/main/resources/application.yml
+    - ~/.m2:/root/.m2
+    - ./my.cnf:/etc/mysql/my.cnf
+    - ./db.sql:/db.sql

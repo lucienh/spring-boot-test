@@ -1,0 +1,63 @@
+spring:
+  profiles.active: dev
+  datasource:
+    url: jdbc:mysql://127.0.0.1:3307/project?autoReconnect=true&useCompression=true&useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&allowMultiQueries=true
+    username: lucien
+    password: 123456
+    driverClassName: com.mysql.jdbc.Driver
+    initialSize: 1
+    maxActive: 20
+    minIdle: 1
+    maxWait: 60000
+    #配置间隔多久才进行一次检测，检测需要关闭的空闲连接，单位是毫秒
+    timeBetweenEvictionRunsMillis: 60000
+    #配置一个连接在池中最小生存的时间，单位是毫秒
+    minEvictableIdleTimeMillis: 300000
+    #用来检测连接是否有效的sql，要求是一个查询语句。
+    validationQuery: SELECT 'x'
+    testWhileIdle: true
+    testOnBorrow: false
+    testOnReturn: false
+    # 打开PSCache，并且指定每个连接上PSCache的大小
+    poolPreparedStatements: true
+    maxPoolPreparedStatementPerConnectionSize: 20
+    #配置监控统计拦截的filters
+    filters: stat
+
+elasticsearch:
+  clusterName: elasticsearch-cluster
+  nodes: 127.0.0.1:9300
+
+server:
+  port: 8090
+  context-path: /
+
+  # Tomcat specifics
+  tomcat:
+    access-log-enabled: false # is access logging enabled
+    basedir: /tmp # base dir (usually not needed, defaults to tmp)
+    background-processor-delay: 30 # in seconds
+    max-threads: 0 # number of threads in protocol handler
+    uri-encoding: UTF-8 # character encoding to use for URL decoding
+
+
+management:
+  port: 8091
+
+
+project:
+  name: ${project.name}
+  version: ${project.artifactId}
+  description: ${project.version}
+info:
+  build:
+    artifact: ${project.artifactId}
+    name: ${project.name}
+    description: ${project.description}
+    version: ${project.version}
+
+
+
+
+
+

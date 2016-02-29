@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="io.github.lucienh.test.project.dao.mysql.ModelMapper">
+
+    <select id="getAllModel" resultType="io.github.lucienh.test.project.entities.model.Model">
+        select * from model;
+    </select>
+
+    <select id="getModelById" resultType="io.github.lucienh.test.project.entities.model.Model"
+            parameterType="java.lang.Integer">
+        select * from model where id=#{id}
+    </select>
+
+    <insert id="saveModel" parameterType="io.github.lucienh.test.project.entities.model.Model" useGeneratedKeys="true">
+        insert into model(name,description,createTime,updateTime,createUserId,createUserName,gqimContext)
+        values(#{name},#{description},#{createTime},#{updateTime},#{createUserId},#{createUserName},#{gqimContext})
+        <selectKey resultType="java.lang.Integer" order="BEFORE" keyProperty="id">
+            SELECT LAST_INSERT_ID() AS id
+        </selectKey>
+    </insert>
+
+    <update id="updateModelById" parameterType="io.github.lucienh.test.project.entities.model.Model">
+        update model set
+        <if test="name != null"> name = #{name},</if>
+        <if test="description != null"> description = #{description},</if>
+        <if test="gqimContext != null"> gqimContext = #{gqimContext},</if>
+        <if test="updateTime != null"> updateTime = #{updateTime}</if>
+        where id=#{id}
+    </update>
+
+    <delete id="deleteModelById" parameterType="java.lang.Integer">
+        delete from model where id = #{id}
+    </delete>
+
+</mapper>
